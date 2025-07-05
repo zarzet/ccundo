@@ -76,6 +76,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Persistent undo history in `~/.ccundo/undone-operations.json`
 - Automatic filtering of undone operations from Claude Code sessions
 
+## [1.0.2] - 2025-07-05
+
+### Fixed
+- **Critical Fix**: File edit undo now correctly reverses only the specific string changes instead of replacing entire file content
+- Fixed issue where undoing an edit operation would delete more content than intended
+- Improved handling of Edit and MultiEdit operations from Claude Code sessions
+
+### Changed
+- Edit operations now track the specific strings that were changed (oldString/newString) rather than full file content
+- UndoManager now performs targeted string replacements instead of full file overwrites
+- Enhanced preview system to show exact string replacements that will be reversed
+
+### Technical Details
+- Claude session parser now properly extracts Edit tool parameters (old_string, new_string, replace_all)
+- Support for MultiEdit operations with multiple string replacements
+- More accurate undo behavior that matches the original Claude Code edit operations
+
 ## [Unreleased]
 
 ### Planned Features

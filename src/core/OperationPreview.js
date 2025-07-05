@@ -56,45 +56,81 @@ export class OperationPreview {
   }
 
   static async previewFileEdit(operation) {
-    const { filePath, originalContent, newContent } = operation.data;
+    const { filePath, originalContent, oldString, newString, replaceAll, edits, isMultiEdit } = operation.data;
     
-    if (!originalContent) {
-      return {
-        preview: `${chalk.yellow(i18n.t('action.will_revert_file'))} ${filePath}\n${chalk.gray(i18n.t('status.original_not_available'))}`,
-        hasContent: false
-      };
-    }
-
     try {
       const currentContent = await fs.readFile(filePath, 'utf8');
-      
-      const originalLines = originalContent.split('\n');
-      const currentLines = currentContent.split('\n');
-      
       let preview = `${chalk.yellow(i18n.t('action.will_revert_file'))} ${filePath}\n\n`;
       
-      // Show a simple diff
-      const maxLines = Math.max(originalLines.length, currentLines.length);
-      const previewLines = Math.min(maxLines, 10);
-      
-      for (let i = 0; i < previewLines; i++) {
-        const orig = originalLines[i] || '';
-        const curr = currentLines[i] || '';
+      if (originalContent) {
+        // Legacy mode - show full diff
+        const originalLines = originalContent.split('\n');
+        const currentLines = currentContent.split('\n');
         
-        if (orig !== curr) {
-          if (curr) {
-            preview += `${chalk.red('-')} ${curr}\n`;
+        const maxLines = Math.max(originalLines.length, currentLines.length);
+        const previewLines = Math.min(maxLines, 10);
+        
+        for (let i = 0; i < previewLines; i++) {
+          const orig = originalLines[i] || '';
+          const curr = currentLines[i] || '';
+          
+          if (orig !== curr) {
+            if (curr) {
+              preview += `${chalk.red('-')} ${curr}\n`;
+            }
+            if (orig) {
+              preview += `${chalk.green('+')} ${orig}\n`;
+            }
+          } else if (orig) {
+            preview += `  ${orig}\n`;
           }
-          if (orig) {
-            preview += `${chalk.green('+')} ${orig}\n`;
-          }
-        } else if (orig) {
-          preview += `  ${orig}\n`;
         }
-      }
-      
-      if (maxLines > 10) {
-        preview += chalk.gray(`... (${maxLines - 10} more lines)`);
+        
+        if (maxLines > 10) {
+          preview += chalk.gray(`... (${maxLines - 10} more lines)`);
+        }
+      } else if (isMultiEdit && edits) {
+        // Show what MultiEdit changes will be reversed
+        preview += chalk.gray('String replacements to be reversed:\n');
+        edits.forEach((edit, index) => {
+          if (edit.new_string && edit.old_string !== undefined) {
+            preview += `${index + 1}. "${chalk.red(edit.new_string)}" → "${chalk.green(edit.old_string)}"\n`;
+          }
+        });
+      } else if (oldString !== undefined && newString) {
+        // Show what single edit will be reversed
+        preview += chalk.gray('String replacement to be reversed:\n');
+        preview += `"${chalk.red(newString)}" → "${chalk.green(oldString)}"`;
+        if (replaceAll) {
+          preview += chalk.gray(' (all occurrences)');
+        }
+        preview += '\n\n';
+        
+        // Show context where the change will happen
+        const lines = currentContent.split('\n');
+        let foundLine = -1;
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].includes(newString)) {
+            foundLine = i;
+            break;
+          }
+        }
+        
+        if (foundLine >= 0) {
+          preview += chalk.gray('Context:\n');
+          const start = Math.max(0, foundLine - 2);
+          const end = Math.min(lines.length, foundLine + 3);
+          for (let i = start; i < end; i++) {
+            if (i === foundLine) {
+              preview += chalk.yellow('> ');
+            } else {
+              preview += '  ';
+            }
+            preview += lines[i] + '\n';
+          }
+        }
+      } else {
+        preview += chalk.gray(i18n.t('status.original_not_available'));
       }
       
       return {
@@ -104,7 +140,7 @@ export class OperationPreview {
       };
     } catch (error) {
       return {
-        preview: `${chalk.yellow('Will revert file:')} ${filePath}\n${chalk.red('Error:')} ${error.message}`,
+        preview: `${chalk.yellow(i18n.t('action.will_revert_file'))} ${filePath}\n${chalk.red('Error:')} ${error.message}`,
         hasContent: false
       };
     }

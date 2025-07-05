@@ -55,25 +55,57 @@ export class UndoManager {
   }
 
   async undoFileEdit(operation) {
-    const { filePath, originalContent } = operation.data;
-    
-    if (!originalContent) {
-      return {
-        success: false,
-        message: `Cannot undo file edit: original content not available for ${filePath}`
-      };
-    }
+    const { filePath, originalContent, oldString, newString, replaceAll, edits, isMultiEdit } = operation.data;
     
     try {
       const currentContent = await fs.readFile(filePath, 'utf8');
       const backupPath = path.join(this.backupDir, `${operation.id}-current`);
       await fs.writeFile(backupPath, currentContent);
       
-      await fs.writeFile(filePath, originalContent);
+      let revertedContent = currentContent;
+      
+      if (originalContent) {
+        // Legacy mode: we have the full original content (from local tracking)
+        revertedContent = originalContent;
+      } else if (isMultiEdit && edits) {
+        // Handle MultiEdit by reversing each edit in reverse order
+        for (let i = edits.length - 1; i >= 0; i--) {
+          const edit = edits[i];
+          if (edit.new_string && edit.old_string !== undefined) {
+            // Try to replace new_string back with old_string
+            if (revertedContent.includes(edit.new_string)) {
+              revertedContent = revertedContent.replace(edit.new_string, edit.old_string);
+            }
+          }
+        }
+      } else if (oldString !== undefined && newString) {
+        // Handle single Edit operation - reverse the string replacement
+        if (replaceAll) {
+          // Replace all occurrences
+          revertedContent = revertedContent.split(newString).join(oldString);
+        } else {
+          // Replace first occurrence only
+          if (revertedContent.includes(newString)) {
+            revertedContent = revertedContent.replace(newString, oldString);
+          } else {
+            return {
+              success: false,
+              message: `Cannot undo edit: expected string not found in ${filePath}`
+            };
+          }
+        }
+      } else {
+        return {
+          success: false,
+          message: `Cannot undo file edit: insufficient data for ${filePath}`
+        };
+      }
+      
+      await fs.writeFile(filePath, revertedContent);
       
       return {
         success: true,
-        message: `File reverted: ${filePath}`,
+        message: `File edit reverted: ${filePath}`,
         backupPath
       };
     } catch (error) {
@@ -86,6 +118,13 @@ export class UndoManager {
 
   async undoFileDelete(operation) {
     const { filePath, content } = operation.data;
+    
+    if (!content) {
+      return {
+        success: false,
+        message: `Cannot restore file: content not available for ${filePath}`
+      };
+    }
     
     try {
       await fs.writeFile(filePath, content);
@@ -110,7 +149,7 @@ export class UndoManager {
       
       return {
         success: true,
-        message: `File renamed back: ${newPath} -> ${oldPath}`
+        message: `File renamed back: ${newPath} → ${oldPath}`
       };
     } catch (error) {
       return {
@@ -157,9 +196,11 @@ export class UndoManager {
   }
 
   async undoBashCommand(operation) {
+    const { command } = operation.data;
+    
     return {
       success: false,
-      message: `Cannot automatically undo bash command: ${operation.data.command}\nPlease manually revert any changes.`
+      message: `Cannot auto-undo bash command: ${command}\nPlease manually revert any changes.`
     };
   }
 }

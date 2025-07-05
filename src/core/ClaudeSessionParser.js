@@ -96,12 +96,28 @@ export class ClaudeSessionParser {
         break;
 
       case 'Edit':
-      case 'MultiEdit':
         if (input.file_path) {
           const op = new Operation(OperationType.FILE_EDIT, {
             filePath: input.file_path,
-            originalContent: input.old_string || '',
-            newContent: input.new_string || ''
+            // Note: We only have the string that was replaced, not the full file content
+            // This will be handled differently in UndoManager
+            oldString: input.old_string || '',
+            newString: input.new_string || '',
+            replaceAll: input.replace_all || false
+          });
+          op.timestamp = new Date(timestamp);
+          op.id = toolUse.id;
+          return op;
+        }
+        break;
+        
+      case 'MultiEdit':
+        if (input.file_path) {
+          // For MultiEdit, we have multiple edits but still just the strings
+          const op = new Operation(OperationType.FILE_EDIT, {
+            filePath: input.file_path,
+            edits: input.edits || [],
+            isMultiEdit: true
           });
           op.timestamp = new Date(timestamp);
           op.id = toolUse.id;

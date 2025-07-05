@@ -1,6 +1,6 @@
 {
   "name": "ccundo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Intelligent undo for Claude Code sessions - Revert individual operations with cascading safety and detailed previews",
   "main": "index.js",
   "bin": {

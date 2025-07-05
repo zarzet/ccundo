@@ -3,6 +3,7 @@ import path from 'path';
 import { createReadStream } from 'fs';
 import { createInterface } from 'readline';
 import { Operation, OperationType } from './Operation.js';
+import { UndoTracker } from './UndoTracker.js';
 
 export class ClaudeSessionParser {
   constructor() {
@@ -70,7 +71,12 @@ export class ClaudeSessionParser {
       }
     }
 
-    return operations;
+    // Filter out operations that have already been undone
+    const undoTracker = new UndoTracker();
+    await undoTracker.init();
+    const filteredOperations = await undoTracker.filterUndoneOperations(operations, sessionFile);
+    
+    return filteredOperations;
   }
 
   extractOperation(toolUse, timestamp) {

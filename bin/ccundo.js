@@ -10,6 +10,7 @@ import { Operation, OperationType } from '../src/core/Operation.js';
 import { ClaudeSessionParser } from '../src/core/ClaudeSessionParser.js';
 import { OperationPreview } from '../src/core/OperationPreview.js';
 import { i18n } from '../src/i18n/i18n.js';
+import { UndoTracker } from '../src/core/UndoTracker.js';
 
 // Initialize i18n
 await i18n.init();
@@ -105,6 +106,7 @@ program
   .action(async (operationId, options) => {
     try {
       let operations = [];
+      let sessionFile = null;
       
       if (options.local) {
         // Use local ccundo tracking
@@ -120,7 +122,7 @@ program
       } else {
         // Use Claude Code sessions
         const parser = new ClaudeSessionParser();
-        const sessionFile = await parser.getCurrentSessionFile();
+        sessionFile = await parser.getCurrentSessionFile();
         
         if (!sessionFile) {
           console.log(chalk.yellow('No active Claude Code session found in this directory.'));
@@ -205,6 +207,9 @@ program
       const undoManager = new UndoManager();
       await undoManager.init();
       
+      const undoTracker = new UndoTracker();
+      await undoTracker.init();
+      
       console.log(chalk.cyan(`\\nUndoing ${operationsToUndo.length} operations...\\n`));
       
       let successCount = 0;
@@ -218,6 +223,11 @@ program
           console.log(chalk.green(`✓ ${result.message}`));
           if (result.backupPath) {
             console.log(chalk.gray(`  Backup saved to: ${result.backupPath}`));
+          }
+          
+          // Mark operation as undone if using Claude Code sessions
+          if (sessionFile) {
+            await undoTracker.markAsUndone(operation.id, sessionFile);
           }
         } else {
           failCount++;

@@ -64,6 +64,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - chalk ^5.3.0 - Terminal styling
 - inquirer ^9.2.12 - Interactive prompts
 
+## [1.0.1] - 2025-07-05
+
+### Fixed
+- **Critical Bug Fix**: Operations that have been undone are now properly tracked and filtered out from subsequent undo lists
+- Added `UndoTracker` to maintain state of undone operations across sessions
+- Prevents errors when trying to undo already-undone operations
+- Session file tracking for proper operation filtering
+
+### Added
+- Persistent undo history in `~/.ccundo/undone-operations.json`
+- Automatic filtering of undone operations from Claude Code sessions
+
 ## [Unreleased]
 
 ### Planned Features

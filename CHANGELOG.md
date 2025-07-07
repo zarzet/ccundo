@@ -93,6 +93,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for MultiEdit operations with multiple string replacements
 - More accurate undo behavior that matches the original Claude Code edit operations
 
+## [1.1.0] - 2025-07-07
+
+### Added
+- **Redo Functionality**: Added complete redo system to reverse previously undone operations
+- New `ccundo redo` command with interactive operation selection
+- Cascading redo support - redoing an operation automatically redos all operations that were undone before it
+- RedoManager class for safely re-applying undone operations
+- Full i18n support for redo functionality in English and Japanese
+- Updated UndoTracker to support redo state management
+
+### CLI Commands
+- `ccundo redo` - Interactive redo of previously undone operations
+- `ccundo redo [operation-id]` - Redo specific operation by ID
+- Added `-y, --yes` flag to skip confirmation prompts
+
+### Technical Details
+- RedoManager reverses undo operations safely
+- Support for all operation types: file create/edit/delete, rename, directory operations
+- Automatic backup creation before redo operations
+- Enhanced UndoTracker with `markAsRedone()` method
+- Cascading redo maintains project consistency
+
+### Internationalization
+- Added Japanese translations for all redo-related messages
+- Enhanced prompt translations for redo confirmations
+
 ## [Unreleased]
 
 ### Planned Features

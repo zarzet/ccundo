@@ -5,6 +5,7 @@ export const languages = {
       // Command descriptions
       'cmd.list.description': 'List all operations in the current Claude Code session',
       'cmd.undo.description': 'Undo operations from the current Claude Code session',
+      'cmd.redo.description': 'Redo previously undone operations',
       'cmd.preview.description': 'Preview what would be undone without making changes',
       'cmd.sessions.description': 'List all available Claude Code sessions',
       'cmd.session.description': 'Switch to a different session',
@@ -23,6 +24,7 @@ export const languages = {
       'msg.no_local_session': 'No local ccundo session found.',
       'msg.no_operations': 'No operations found.',
       'msg.no_operations_to_undo': 'No operations to undo.',
+      'msg.no_operations_to_redo': 'No operations to redo.',
       'msg.operation_not_found': 'Operation {id} not found.',
       'msg.already_undone': 'This operation has already been undone.',
       'msg.undo_cancelled': 'Undo cancelled.',
@@ -33,8 +35,10 @@ export const languages = {
       
       // Prompts
       'prompt.select_operation_undo': 'Select operation to undo:',
+      'prompt.select_operation_redo': 'Select operation to redo:',
       'prompt.select_operation_preview': 'Select operation to preview:',
       'prompt.confirm_undo': 'Are you sure you want to undo these {count} operations?',
+      'prompt.confirm_redo': 'Are you sure you want to redo these {count} operations?',
       'prompt.cascading_warning': '⚠️  Cascading undo: Selecting an operation will undo it and ALL operations that came after it.',
       
       // Operation types
@@ -63,7 +67,9 @@ export const languages = {
       'header.available_sessions_local': 'Available local sessions:',
       'header.preview': '📋 Preview: Would undo {count} operation(s):',
       'header.undoing': 'Undoing {count} operations...',
+      'header.redoing': 'Redoing {count} operations...',
       'header.this_will_undo': 'This will undo {count} operation(s):',
+      'header.this_will_redo': 'This will redo {count} operation(s):',
       
       // Status
       'status.active': '[ACTIVE]',
@@ -93,6 +99,7 @@ export const languages = {
       // Command descriptions
       'cmd.list.description': '現在のClaude Codeセッションのすべての操作を一覧表示',
       'cmd.undo.description': '現在のClaude Codeセッションの操作を元に戻す',
+      'cmd.redo.description': '以前に元に戻した操作をやり直し',
       'cmd.preview.description': '変更を加えずに元に戻される内容をプレビュー',
       'cmd.sessions.description': '利用可能なすべてのClaude Codeセッションを一覧表示',
       'cmd.session.description': '別のセッションに切り替え',
@@ -111,6 +118,7 @@ export const languages = {
       'msg.no_local_session': 'ローカルccundoセッションが見つかりません。',
       'msg.no_operations': '操作が見つかりません。',
       'msg.no_operations_to_undo': '元に戻す操作がありません。',
+      'msg.no_operations_to_redo': 'やり直す操作がありません。',
       'msg.operation_not_found': '操作 {id} が見つかりません。',
       'msg.already_undone': 'この操作は既に元に戻されています。',
       'msg.undo_cancelled': '元に戻す操作がキャンセルされました。',
@@ -121,8 +129,10 @@ export const languages = {
       
       // Prompts
       'prompt.select_operation_undo': '元に戻す操作を選択:',
+      'prompt.select_operation_redo': 'やり直す操作を選択:',
       'prompt.select_operation_preview': 'プレビューする操作を選択:',
       'prompt.confirm_undo': 'これら{count}個の操作を本当に元に戻しますか？',
+      'prompt.confirm_redo': 'これら{count}個の操作を本当にやり直しますか？',
       'prompt.cascading_warning': '⚠️  カスケード元に戻し: 操作を選択すると、その操作とその後のすべての操作が元に戻されます。',
       
       // Operation types
@@ -151,7 +161,9 @@ export const languages = {
       'header.available_sessions_local': '利用可能なローカルセッション:',
       'header.preview': '📋 プレビュー: {count}個の操作を元に戻します:',
       'header.undoing': '{count}個の操作を元に戻しています...',
+      'header.redoing': '{count}個の操作をやり直しています...',
       'header.this_will_undo': 'これにより{count}個の操作が元に戻されます:',
+      'header.this_will_redo': 'これにより{count}個の操作がやり直されます:',
       
       // Status
       'status.active': '[アクティブ]',

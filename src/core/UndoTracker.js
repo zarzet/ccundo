@@ -35,6 +35,18 @@ export class UndoTracker {
     }
   }
 
+  async markAsRedone(operationId, sessionFile) {
+    const undoneOps = await this.getUndoneOperations();
+    
+    if (undoneOps[sessionFile]) {
+      const index = undoneOps[sessionFile].indexOf(operationId);
+      if (index > -1) {
+        undoneOps[sessionFile].splice(index, 1);
+        await fs.writeFile(this.undoFile, JSON.stringify(undoneOps, null, 2));
+      }
+    }
+  }
+
   async isUndone(operationId, sessionFile) {
     const undoneOps = await this.getUndoneOperations();
     return undoneOps[sessionFile]?.includes(operationId) || false;
@@ -45,5 +57,15 @@ export class UndoTracker {
     const undoneIds = undoneOps[sessionFile] || [];
     
     return operations.filter(op => !undoneIds.includes(op.id));
+  }
+
+  async getUndoneOperationsList(operations, sessionFile) {
+    const undoneOps = await this.getUndoneOperations();
+    const undoneIds = undoneOps[sessionFile] || [];
+    
+    // Return operations that have been undone, in reverse order (most recent first)
+    return operations
+      .filter(op => undoneIds.includes(op.id))
+      .reverse();
   }
 }

@@ -5,13 +5,14 @@
 
 > **Intelligent undo for Claude Code sessions** - Revert individual operations with cascading safety and detailed previews.
 
-ccundo seamlessly integrates with Claude Code to provide granular undo functionality. It reads directly from Claude Code's session files to track file operations and allows you to selectively revert changes with full preview and cascading safety.
+ccundo seamlessly integrates with Claude Code to provide granular undo and redo functionality. It reads directly from Claude Code's session files to track file operations and allows you to selectively revert or restore changes with full preview and cascading safety.
 
 ## ✨ Features
 
 - **Automatic Detection** - Reads directly from Claude Code session files
-- **Detailed Previews** - See exactly what will be changed before undoing
-- **Cascading Undo** - Maintains project consistency by undoing dependent operations
+- **Detailed Previews** - See exactly what will be changed before undoing/redoing
+- **Cascading Undo/Redo** - Maintains project consistency by undoing/redoing dependent operations
+- **Complete Redo System** - Reverse any undo operation with full cascading support
 - **Multi-language** - Supports English and Japanese (日本語)
 - **Smart Operation Tracking** - Tracks file edits, creations, deletions, renames, and bash commands
 - **Safe Backups** - Creates backups before making changes
@@ -37,6 +38,10 @@ npm install -g ccundo
 4. Undo operations with confirmation:
    ```bash
    ccundo undo
+   ```
+5. Redo previously undone operations:
+   ```bash
+   ccundo redo
    ```
 
 ## Usage
@@ -94,6 +99,18 @@ ccundo undo --yes             # Skip confirmation prompts
 
 **Cascading Undo:** When you select an operation to undo, ccundo will also undo ALL operations that came after it. This ensures your project remains in a consistent state.
 
+### Redo Operations
+
+Restore previously undone operations with the same safety and preview features:
+
+```bash
+ccundo redo                    # Interactive selection of undone operations
+ccundo redo <operation-id>     # Redo specific operation
+ccundo redo --yes             # Skip confirmation prompts
+```
+
+**Cascading Redo:** When you select an operation to redo, ccundo will also redo ALL undone operations that came before it. This maintains the same consistency guarantees as undo operations.
+
 ### Session Management
 
 Work with multiple Claude Code sessions:
@@ -129,15 +146,15 @@ ccundo automatically integrates with Claude Code by:
 
 ## Supported Operations
 
-| Operation Type | Description | Undo Action |
-|---|---|---|
-| **File Create** | Files created by Claude | Delete file (with backup) |
-| **File Edit** | File content modifications | Revert to original content |
-| **File Delete** | Files deleted by Claude | Restore file content |
-| **File Rename** | File/directory renames | Rename back to original |
-| **Directory Create** | Directory creation | Remove directory |
-| **Directory Delete** | Directory removal | Recreate directory |
-| **Bash Command** | Shell commands | Manual intervention required |
+| Operation Type | Description | Undo Action | Redo Action |
+|---|---|---|---|
+| **File Create** | Files created by Claude | Delete file (with backup) | Recreate file with original content |
+| **File Edit** | File content modifications | Revert to original content | Re-apply the edit changes |
+| **File Delete** | Files deleted by Claude | Restore file content | Delete file again (with backup) |
+| **File Rename** | File/directory renames | Rename back to original | Apply rename again |
+| **Directory Create** | Directory creation | Remove directory | Recreate directory |
+| **Directory Delete** | Directory removal | Recreate directory | Remove directory again |
+| **Bash Command** | Shell commands | Manual intervention required | Manual intervention required |
 
 ## Examples
 
@@ -192,15 +209,37 @@ $ ccundo preview
    Manual intervention required
 ```
 
+### Redoing Undone Operations
+
+```bash
+$ ccundo undo
+# ... undo some operations ...
+
+$ ccundo redo
+⚠️  Cascading redo: Selecting an operation will redo it and ALL undone operations that came before it.
+
+? Select operation to redo:
+❯ file_edit - 2m ago (+ 1 more will be redone)
+  file_create - 5m ago
+
+$ ccundo redo --yes
+✓ File edit redone: /project/src/app.js
+  Backup saved to: ~/.ccundo/backups/toolu_01XYZ123-redo
+✓ File recreated: /project/new-feature.js
+
+Completed: 2 successful, 0 failed
+```
+
 ## Configuration
 
 ccundo stores its configuration in `~/.ccundo/`:
 
 ```
 ~/.ccundo/
-├── config.json          # Language preferences
-├── sessions/            # Local session tracking (if used)
-└── backups/            # Operation backups
+├── config.json              # Language preferences
+├── undone-operations.json   # Undo/redo state tracking
+├── sessions/                # Local session tracking (if used)
+└── backups/                # Operation backups
 ```
 
 **Config format:**

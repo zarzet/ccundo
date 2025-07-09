@@ -12,8 +12,8 @@ export class ClaudeSessionParser {
 
   async getCurrentProjectDir() {
     const cwd = process.cwd();
-    // Replace all forward slashes with dashes and spaces with dashes too
-    const safePath = cwd.replace(/[\s\/]/g, '-');
+    // Replace all forward slashes, spaces, and underscores with dashes
+    const safePath = cwd.replace(/[\s\/_]/g, '-');
     return path.join(this.claudeProjectsDir, safePath);
   }
 

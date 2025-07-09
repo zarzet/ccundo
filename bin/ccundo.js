@@ -21,7 +21,7 @@ const program = new Command();
 program
   .name('ccundo')
   .description('Undo individual steps performed by Claude Code within a session')
-  .version('1.1.0');
+  .version('1.1.1');
 
 program
   .command('list')

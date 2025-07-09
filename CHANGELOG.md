@@ -119,6 +119,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Japanese translations for all redo-related messages
 - Enhanced prompt translations for redo confirmations
 
+## [1.1.1] - 2025-07-09
+
+### Fixed
+- **Critical Bug Fix**: Fixed ccundo list command failing in directories with underscores in their names
+- Updated path conversion regex in ClaudeSessionParser to handle underscores correctly
+- Changed regex from `/[\s\/]/g` to `/[\s\/_]/g` to match Claude Code's directory naming convention
+
+### Technical Details
+- Directories like `/home/user/my_project_name` now correctly map to `-home-user-my-project-name`
+- Maintains backward compatibility with existing functionality
+- All ccundo commands now work properly in directories containing underscores
+
 ## [Unreleased]
 
 ### Planned Features

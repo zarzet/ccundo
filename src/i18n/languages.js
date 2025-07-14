@@ -185,5 +185,287 @@ export const languages = {
       'suffix.more_would_be_undone': '（+ {count}個も元に戻されます）',
       'suffix.tip_to_undo': '💡 実際に元に戻すには次を実行: ccundo undo'
     }
+  },
+
+  fr: {
+    name: 'Français',
+    messages: {
+      // Command descriptions
+      'cmd.list.description': 'Lister toutes les opérations de la session Claude Code actuelle',
+      'cmd.undo.description': 'Annuler les opérations de la session Claude Code actuelle',
+      'cmd.redo.description': 'Rétablir les opérations précédemment annulées',
+      'cmd.preview.description': 'Prévisualiser ce qui serait annulé sans appliquer les changements',
+      'cmd.sessions.description': 'Lister toutes les sessions Claude Code disponibles',
+      'cmd.session.description': 'Changer de session',
+      'cmd.language.description': 'Définir la langue de l\'interface',
+
+      // Options
+      'opt.all': 'Afficher toutes les opérations, y compris celles annulées',
+      'opt.session': 'Spécifier l\'ID de session',
+      'opt.claude': 'Afficher les opérations de la session Claude Code (par défaut)',
+      'opt.local': 'Afficher les opérations du suivi local ccundo',
+      'opt.yes': 'Ignorer la confirmation',
+
+      // Messages
+      'msg.no_active_session': 'Aucune session Claude Code active trouvée dans ce répertoire.',
+      'msg.make_sure_directory': 'Assurez-vous d\'être dans un répertoire où Claude Code a été utilisé.',
+      'msg.no_local_session': 'Aucune session ccundo locale trouvée.',
+      'msg.no_operations': 'Aucune opération trouvée.',
+      'msg.no_operations_to_undo': 'Aucune opération à annuler.',
+      'msg.no_operations_to_redo': 'Aucune opération à rétablir.',
+      'msg.operation_not_found': 'Opération {id} introuvable.',
+      'msg.already_undone': 'Cette opération a déjà été annulée.',
+      'msg.undo_cancelled': 'Annulation annulée.',
+      'msg.no_sessions_found': 'Aucune session Claude Code trouvée.',
+      'msg.no_local_sessions': 'Aucune session locale trouvée.',
+      'msg.language_set': 'Langue définie sur {language}.',
+      'msg.language_invalid': 'Langue invalide. Langues disponibles : {languages}',
+
+      // Prompts
+      'prompt.select_operation_undo': 'Sélectionner l\'opération à annuler :',
+      'prompt.select_operation_redo': 'Sélectionner l\'opération à rétablir :',
+      'prompt.select_operation_preview': 'Sélectionner l\'opération à prévisualiser :',
+      'prompt.confirm_undo': 'Êtes-vous sûr de vouloir annuler ces {count} opérations ?',
+      'prompt.confirm_redo': 'Êtes-vous sûr de vouloir rétablir ces {count} opérations ?',
+      'prompt.cascading_warning': '⚠️ Annulation en cascade : Sélectionner une opération l\'annulera ainsi que TOUTES les opérations qui l\'ont suivie.',
+
+      // Operation types
+      'op.file_create': 'création_fichier',
+      'op.file_edit': 'édition_fichier',
+      'op.file_delete': 'suppression_fichier',
+      'op.file_rename': 'renommage_fichier',
+      'op.directory_create': 'création_répertoire',
+      'op.directory_delete': 'suppression_répertoire',
+      'op.bash_command': 'commande_bash',
+
+      // Operation actions
+      'action.will_delete_file': 'Va supprimer le fichier :',
+      'action.will_revert_file': 'Va annuler les modifications du fichier :',
+      'action.will_restore_file': 'Va restaurer le fichier :',
+      'action.will_rename_back': 'Va renommer en arrière :',
+      'action.will_remove_directory': 'Va supprimer le répertoire :',
+      'action.will_restore_directory': 'Va restaurer le répertoire :',
+      'action.cannot_undo_bash': 'Impossible d\'annuler automatiquement la commande bash :',
+      'action.manual_intervention': 'Intervention manuelle requise',
+
+      // Headers
+      'header.operations_claude': 'Opérations de la session Claude Code :',
+      'header.operations_local': 'Opérations de la session locale {sessionId} :',
+      'header.available_sessions_claude': 'Sessions Claude Code disponibles :',
+      'header.available_sessions_local': 'Sessions locales disponibles :',
+      'header.preview': '📋 Prévisualisation : Annulerait {count} opération(s) :',
+      'header.undoing': 'Annulation de {count} opérations...',
+      'header.redoing': 'Rétablissement de {count} opérations...',
+      'header.this_will_undo': 'Ceci annulera {count} opération(s) :',
+      'header.this_will_redo': 'Ceci rétablira {count} opération(s) :',
+
+      // Status
+      'status.active': '[ACTIF]',
+      'status.undone': '[ANNULÉ]',
+      'status.current_content': 'Contenu actuel :',
+      'status.content_to_restore': 'Contenu à restaurer :',
+      'status.original_not_available': '(Contenu original non disponible depuis la session)',
+      'status.content_not_available': '(Contenu non disponible depuis la session)',
+      'status.completed': 'Terminé : {success} réussi(s), {failed} échoué(s)',
+
+      // Time
+      'time.seconds_ago': 'il y a {seconds}s',
+      'time.minutes_ago': 'il y a {minutes}m',
+      'time.hours_ago': 'il y a {hours}h',
+      'time.days_ago': 'il y a {days}j',
+
+      // Suffixes
+      'suffix.more_operations': '(+ {count} de plus seront annulées)',
+      'suffix.more_would_be_undone': '(+ {count} de plus seraient annulées)',
+      'suffix.tip_to_undo': '💡 Pour effectuer réellement ces annulations, exécutez : ccundo undo'
+    }
+  },
+
+  es: {
+    name: 'Español',
+    messages: {
+      // Command descriptions
+      'cmd.list.description': 'Listar todas las operaciones en la sesión actual de Claude Code',
+      'cmd.undo.description': 'Deshacer operaciones de la sesión actual de Claude Code',
+      'cmd.redo.description': 'Rehacer operaciones previamente deshechas',
+      'cmd.preview.description': 'Previsualizar lo que se desharía sin hacer cambios',
+      'cmd.sessions.description': 'Listar todas las sesiones de Claude Code disponibles',
+      'cmd.session.description': 'Cambiar a una sesión diferente',
+      'cmd.language.description': 'Establecer el idioma de la interfaz',
+
+      // Options
+      'opt.all': 'Mostrar todas las operaciones, incluidas las deshechas',
+      'opt.session': 'Especificar ID de sesión',
+      'opt.claude': 'Mostrar operaciones de la sesión de Claude Code (predeterminado)',
+      'opt.local': 'Mostrar operaciones del seguimiento local de ccundo',
+      'opt.yes': 'Omitir confirmación',
+
+      // Messages
+      'msg.no_active_session': 'No se encontró ninguna sesión activa de Claude Code en este directorio.',
+      'msg.make_sure_directory': 'Asegúrate de estar en un directorio donde se haya usado Claude Code.',
+      'msg.no_local_session': 'No se encontró ninguna sesión local de ccundo.',
+      'msg.no_operations': 'No se encontraron operaciones.',
+      'msg.no_operations_to_undo': 'No hay operaciones para deshacer.',
+      'msg.no_operations_to_redo': 'No hay operaciones para rehacer.',
+      'msg.operation_not_found': 'Operación {id} no encontrada.',
+      'msg.already_undone': 'Esta operación ya ha sido deshecha.',
+      'msg.undo_cancelled': 'Deshacer cancelado.',
+      'msg.no_sessions_found': 'No se encontraron sesiones de Claude Code.',
+      'msg.no_local_sessions': 'No se encontraron sesiones locales.',
+      'msg.language_set': 'Idioma establecido a {language}.',
+      'msg.language_invalid': 'Idioma inválido. Idiomas disponibles: {languages}',
+
+      // Prompts
+      'prompt.select_operation_undo': 'Seleccionar operación para deshacer:',
+      'prompt.select_operation_redo': 'Seleccionar operación para rehacer:',
+      'prompt.select_operation_preview': 'Seleccionar operación para previsualizar:',
+      'prompt.confirm_undo': '¿Estás seguro de que quieres deshacer estas {count} operaciones?',
+      'prompt.confirm_redo': '¿Estás seguro de que quieres rehacer estas {count} operaciones?',
+      'prompt.cascading_warning': '⚠️ Deshacer en cascada: Seleccionar una operación la deshará a ella y a TODAS las operaciones que vinieron después.',
+
+      // Operation types
+      'op.file_create': 'creación_archivo',
+      'op.file_edit': 'edición_archivo',
+      'op.file_delete': 'eliminación_archivo',
+      'op.file_rename': 'renombrar_archivo',
+      'op.directory_create': 'creación_directorio',
+      'op.directory_delete': 'eliminación_directorio',
+      'op.bash_command': 'comando_bash',
+
+      // Operation actions
+      'action.will_delete_file': 'Se eliminará el archivo:',
+      'action.will_revert_file': 'Se revertirá el archivo:',
+      'action.will_restore_file': 'Se restaurará el archivo:',
+      'action.will_rename_back': 'Se renombrará de vuelta:',
+      'action.will_remove_directory': 'Se eliminará el directorio:',
+      'action.will_restore_directory': 'Se restaurará el directorio:',
+      'action.cannot_undo_bash': 'No se puede deshacer automáticamente el comando bash:',
+      'action.manual_intervention': 'Intervención manual requerida',
+
+      // Headers
+      'header.operations_claude': 'Operaciones de la sesión de Claude Code:',
+      'header.operations_local': 'Operaciones en la sesión local {sessionId}:',
+      'header.available_sessions_claude': 'Sesiones de Claude Code disponibles:',
+      'header.available_sessions_local': 'Sesiones locales disponibles:',
+      'header.preview': '📋 Previsualización: Desharía {count} operación(es):',
+      'header.undoing': 'Deshaciendo {count} operaciones...',
+      'header.redoing': 'Rehaciendo {count} operaciones...',
+      'header.this_will_undo': 'Esto deshará {count} operación(es):',
+      'header.this_will_redo': 'Esto rehacerá {count} operación(es):',
+
+      // Status
+      'status.active': '[ACTIVO]',
+      'status.undone': '[DESHECHO]',
+      'status.current_content': 'Contenido actual:',
+      'status.content_to_restore': 'Contenido a restaurar:',
+      'status.original_not_available': '(Contenido original no disponible desde la sesión)',
+      'status.content_not_available': '(Contenido no disponible desde la sesión)',
+      'status.completed': 'Completado: {success} exitoso(s), {failed} fallido(s)',
+
+      // Time
+      'time.seconds_ago': 'hace {seconds}s',
+      'time.minutes_ago': 'hace {minutes}m',
+      'time.hours_ago': 'hace {hours}h',
+      'time.days_ago': 'hace {days}d',
+
+      // Suffixes
+      'suffix.more_operations': '(+ {count} más serán deshechas)',
+      'suffix.more_would_be_undone': '(+ {count} más serían deshechas)',
+      'suffix.tip_to_undo': '💡 Para realizar realmente estos deshacer, ejecuta: ccundo undo'
+    }
+  },
+
+  de: {
+    name: 'Deutsch',
+    messages: {
+      // Command descriptions
+      'cmd.list.description': 'Alle Operationen in der aktuellen Claude Code Sitzung auflisten',
+      'cmd.undo.description': 'Operationen aus der aktuellen Claude Code Sitzung rückgängig machen',
+      'cmd.redo.description': 'Zuvor rückgängig gemachte Operationen wiederherstellen',
+      'cmd.preview.description': 'Vorschau anzeigen, was rückgängig gemacht würde, ohne Änderungen vorzunehmen',
+      'cmd.sessions.description': 'Alle verfügbaren Claude Code Sitzungen auflisten',
+      'cmd.session.description': 'Zu einer anderen Sitzung wechseln',
+      'cmd.language.description': 'Die Sprache der Benutzeroberfläche einstellen',
+
+      // Options
+      'opt.all': 'Alle Operationen anzeigen, einschließlich der rückgängig gemachten',
+      'opt.session': 'Sitzungs-ID angeben',
+      'opt.claude': 'Operationen aus der Claude Code Sitzung anzeigen (Standard)',
+      'opt.local': 'Operationen aus der lokalen ccundo Verfolgung anzeigen',
+      'opt.yes': 'Bestätigung überspringen',
+
+      // Messages
+      'msg.no_active_session': 'Keine aktive Claude Code Sitzung in diesem Verzeichnis gefunden.',
+      'msg.make_sure_directory': 'Stellen Sie sicher, dass Sie sich in einem Verzeichnis befinden, in dem Claude Code verwendet wurde.',
+      'msg.no_local_session': 'Keine lokale ccundo Sitzung gefunden.',
+      'msg.no_operations': 'Keine Operationen gefunden.',
+      'msg.no_operations_to_undo': 'Keine Operationen zum Rückgängigmachen vorhanden.',
+      'msg.no_operations_to_redo': 'Keine Operationen zum Wiederherstellen vorhanden.',
+      'msg.operation_not_found': 'Operation {id} nicht gefunden.',
+      'msg.already_undone': 'Diese Operation wurde bereits rückgängig gemacht.',
+      'msg.undo_cancelled': 'Rückgängigmachen abgebrochen.',
+      'msg.no_sessions_found': 'Keine Claude Code Sitzungen gefunden.',
+      'msg.no_local_sessions': 'Keine lokalen Sitzungen gefunden.',
+      'msg.language_set': 'Sprache auf {language} eingestellt.',
+      'msg.language_invalid': 'Ungültige Sprache. Verfügbare Sprachen: {languages}',
+
+      // Prompts
+      'prompt.select_operation_undo': 'Operation zum Rückgängigmachen auswählen:',
+      'prompt.select_operation_redo': 'Operation zum Wiederherstellen auswählen:',
+      'prompt.select_operation_preview': 'Operation zur Vorschau auswählen:',
+      'prompt.confirm_undo': 'Sind Sie sicher, dass Sie diese {count} Operationen rückgängig machen möchten?',
+      'prompt.confirm_redo': 'Sind Sie sicher, dass Sie diese {count} Operationen wiederherstellen möchten?',
+      'prompt.cascading_warning': '⚠️ Kaskadierendes Rückgängigmachen: Das Auswählen einer Operation macht diese und ALLE nachfolgenden Operationen rückgängig.',
+
+      // Operation types
+      'op.file_create': 'Datei_erstellen',
+      'op.file_edit': 'Datei_bearbeiten',
+      'op.file_delete': 'Datei_löschen',
+      'op.file_rename': 'Datei_umbenennen',
+      'op.directory_create': 'Verzeichnis_erstellen',
+      'op.directory_delete': 'Verzeichnis_löschen',
+      'op.bash_command': 'bash_Befehl',
+
+      // Operation actions
+      'action.will_delete_file': 'Wird Datei löschen:',
+      'action.will_revert_file': 'Wird Datei zurücksetzen:',
+      'action.will_restore_file': 'Wird Datei wiederherstellen:',
+      'action.will_rename_back': 'Wird zurück umbenennen:',
+      'action.will_remove_directory': 'Wird Verzeichnis entfernen:',
+      'action.will_restore_directory': 'Wird Verzeichnis wiederherstellen:',
+      'action.cannot_undo_bash': 'Kann bash Befehl nicht automatisch rückgängig machen:',
+      'action.manual_intervention': 'Manuelle Intervention erforderlich',
+
+      // Headers
+      'header.operations_claude': 'Operationen aus der Claude Code Sitzung:',
+      'header.operations_local': 'Operationen in lokaler Sitzung {sessionId}:',
+      'header.available_sessions_claude': 'Verfügbare Claude Code Sitzungen:',
+      'header.available_sessions_local': 'Verfügbare lokale Sitzungen:',
+      'header.preview': '📋 Vorschau: Würde {count} Operation(en) rückgängig machen:',
+      'header.undoing': 'Mache {count} Operationen rückgängig...',
+      'header.redoing': 'Stelle {count} Operationen wieder her...',
+      'header.this_will_undo': 'Dies wird {count} Operation(en) rückgängig machen:',
+      'header.this_will_redo': 'Dies wird {count} Operation(en) wiederherstellen:',
+
+      // Status
+      'status.active': '[AKTIV]',
+      'status.undone': '[RÜCKGÄNGIG]',
+      'status.current_content': 'Aktueller Inhalt:',
+      'status.content_to_restore': 'Wiederherzustellender Inhalt:',
+      'status.original_not_available': '(Originalinhalt nicht aus Sitzung verfügbar)',
+      'status.content_not_available': '(Inhalt nicht aus Sitzung verfügbar)',
+      'status.completed': 'Abgeschlossen: {success} erfolgreich, {failed} fehlgeschlagen',
+
+      // Time
+      'time.seconds_ago': 'vor {seconds}s',
+      'time.minutes_ago': 'vor {minutes}m',
+      'time.hours_ago': 'vor {hours}h',
+      'time.days_ago': 'vor {days}T',
+
+      // Suffixes
+      'suffix.more_operations': '(+ {count} weitere werden rückgängig gemacht)',
+      'suffix.more_would_be_undone': '(+ {count} weitere würden rückgängig gemacht)',
+      'suffix.tip_to_undo': '💡 Um diese Rückgängigmachungen tatsächlich durchzuführen, führe aus: ccundo undo'
+    }
   }
 };

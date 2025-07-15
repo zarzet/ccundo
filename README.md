@@ -116,7 +116,7 @@ ccundo redo --yes             # Skip confirmation prompts
 Work with multiple Claude Code sessions:
 
 ```bash
-ccundo sessions               # List all sessions across projects
+ccundo sessions              # List all sessions across projects
 ccundo session <session-id>  # Switch to specific session
 ```
 
@@ -125,14 +125,20 @@ ccundo session <session-id>  # Switch to specific session
 ccundo supports multiple languages with persistent preferences:
 
 ```bash
-ccundo language               # Show current language and options
+ccundo language              # Show current language and options
 ccundo language en           # Switch to English
 ccundo language ja           # Switch to Japanese (日本語)
+ccundo language fr           # Switch to French (Français)
+ccundo language es           # Switch to Spanish (Español)
+ccundo language de           # Switch to German (Deutsch)
 ```
 
 **Supported Languages:**
 - 🇺🇸 English (`en`) - Default
 - 🇯🇵 Japanese (`ja`) - 日本語フルサポート
+- 🇫🇷 French (`fr`) - Français
+- 🇪🇸 Spanish (`es`) - Español
+- 🇩🇪 German (`de`) - Deutsch
 
 ## How It Works
 

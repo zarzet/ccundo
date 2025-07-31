@@ -467,5 +467,99 @@ export const languages = {
       'suffix.more_would_be_undone': '(+ {count} weitere würden rückgängig gemacht)',
       'suffix.tip_to_undo': '💡 Um diese Rückgängigmachungen tatsächlich durchzuführen, führe aus: ccundo undo'
     }
+  },
+
+  id: {
+    name: 'Bahasa Indonesia',
+    messages: {
+      // Command descriptions
+      'cmd.list.description': 'Tampilkan semua operasi dalam sesi Claude Code saat ini',
+      'cmd.undo.description': 'Batalkan operasi dari sesi Claude Code saat ini',
+      'cmd.redo.description': 'Ulangi operasi yang sebelumnya dibatalkan',
+      'cmd.preview.description': 'Pratinjau apa yang akan dibatalkan tanpa membuat perubahan',
+      'cmd.sessions.description': 'Tampilkan semua sesi Claude Code yang tersedia',
+      'cmd.session.description': 'Beralih ke sesi yang berbeda',
+      'cmd.language.description': 'Atur bahasa antarmuka',
+      
+      // Options
+      'opt.all': 'Tampilkan semua operasi termasuk yang sudah dibatalkan',
+      'opt.session': 'Tentukan ID sesi',
+      'opt.claude': 'Tampilkan operasi dari sesi Claude Code (default)',
+      'opt.local': 'Tampilkan operasi dari pelacakan ccundo lokal',
+      'opt.yes': 'Lewati konfirmasi',
+      
+      // Messages
+      'msg.no_active_session': 'Tidak ada sesi Claude Code aktif yang ditemukan di direktori ini.',
+      'msg.make_sure_directory': 'Pastikan Anda berada di direktori tempat Claude Code telah digunakan.',
+      'msg.no_local_session': 'Tidak ada sesi ccundo lokal yang ditemukan.',
+      'msg.no_operations': 'Tidak ada operasi yang ditemukan.',
+      'msg.no_operations_to_undo': 'Tidak ada operasi untuk dibatalkan.',
+      'msg.no_operations_to_redo': 'Tidak ada operasi untuk diulangi.',
+      'msg.operation_not_found': 'Operasi {id} tidak ditemukan.',
+      'msg.already_undone': 'Operasi ini sudah dibatalkan.',
+      'msg.undo_cancelled': 'Pembatalan dibatalkan.',
+      'msg.no_sessions_found': 'Tidak ada sesi Claude Code yang ditemukan.',
+      'msg.no_local_sessions': 'Tidak ada sesi lokal yang ditemukan.',
+      'msg.language_set': 'Bahasa diatur ke {language}.',
+      'msg.language_invalid': 'Bahasa tidak valid. Bahasa yang tersedia: {languages}',
+      
+      // Prompts
+      'prompt.select_operation_undo': 'Pilih operasi untuk dibatalkan:',
+      'prompt.select_operation_redo': 'Pilih operasi untuk diulangi:',
+      'prompt.select_operation_preview': 'Pilih operasi untuk pratinjau:',
+      'prompt.confirm_undo': 'Apakah Anda yakin ingin membatalkan {count} operasi ini?',
+      'prompt.confirm_redo': 'Apakah Anda yakin ingin mengulangi {count} operasi ini?',
+      'prompt.cascading_warning': '⚠️  Pembatalan bertingkat: Memilih operasi akan membatalkannya dan SEMUA operasi setelahnya.',
+      
+      // Operation types
+      'op.file_create': 'buat_file',
+      'op.file_edit': 'edit_file',
+      'op.file_delete': 'hapus_file',
+      'op.file_rename': 'ganti_nama_file',
+      'op.directory_create': 'buat_direktori',
+      'op.directory_delete': 'hapus_direktori',
+      'op.bash_command': 'perintah_bash',
+      
+      // Operation actions
+      'action.will_delete_file': 'Akan menghapus file:',
+      'action.will_revert_file': 'Akan mengembalikan file:',
+      'action.will_restore_file': 'Akan memulihkan file:',
+      'action.will_rename_back': 'Akan mengganti nama kembali:',
+      'action.will_remove_directory': 'Akan menghapus direktori:',
+      'action.will_restore_directory': 'Akan memulihkan direktori:',
+      'action.cannot_undo_bash': 'Tidak dapat membatalkan perintah bash secara otomatis:',
+      'action.manual_intervention': 'Diperlukan intervensi manual',
+      
+      // Headers
+      'header.operations_claude': 'Operasi dari sesi Claude Code:',
+      'header.operations_local': 'Operasi dalam sesi lokal {sessionId}:',
+      'header.available_sessions_claude': 'Sesi Claude Code yang tersedia:',
+      'header.available_sessions_local': 'Sesi lokal yang tersedia:',
+      'header.preview': '📋 Pratinjau: Akan membatalkan {count} operasi:',
+      'header.undoing': 'Membatalkan {count} operasi...',
+      'header.redoing': 'Mengulangi {count} operasi...',
+      'header.this_will_undo': 'Ini akan membatalkan {count} operasi:',
+      'header.this_will_redo': 'Ini akan mengulangi {count} operasi:',
+      
+      // Status
+      'status.active': '[AKTIF]',
+      'status.undone': '[DIBATALKAN]',
+      'status.current_content': 'Konten saat ini:',
+      'status.content_to_restore': 'Konten yang akan dipulihkan:',
+      'status.original_not_available': '(Konten asli tidak tersedia dari sesi)',
+      'status.content_not_available': '(Konten tidak tersedia dari sesi)',
+      'status.completed': 'Selesai: {success} berhasil, {failed} gagal',
+      
+      // Time
+      'time.seconds_ago': '{seconds} detik lalu',
+      'time.minutes_ago': '{minutes} menit lalu',
+      'time.hours_ago': '{hours} jam lalu',
+      'time.days_ago': '{days} hari lalu',
+      
+      // Suffixes
+      'suffix.more_operations': '(+ {count} lagi akan dibatalkan)',
+      'suffix.more_would_be_undone': '(+ {count} lagi akan dibatalkan)',
+      'suffix.tip_to_undo': '💡 Untuk benar-benar melakukan pembatalan ini, jalankan: ccundo undo'
+    }
   }
 };

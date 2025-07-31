@@ -18,12 +18,13 @@ export class ClaudeSessionParser {
     // Claude uses different formats for different operating systems
     if (process.platform === 'win32') {
       // Windows: C:\Users\... → C--Users-...
+      // Claude also converts dots to dashes
       safePath = cwd.replace(/:[\\\/]/g, '--')
                      .replace(/[\\/]/g, '-')
-                     .replace(/[\s_]/g, '-');
+                     .replace(/[\s_.]/g, '-');
     } else {
       // Linux/macOS: /home/... → -home-...
-      safePath = cwd.replace(/[\s\/_]/g, '-');
+      safePath = cwd.replace(/[\s\/_.]/g, '-');
     }
     
     return path.join(this.claudeProjectsDir, safePath);

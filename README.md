@@ -13,7 +13,7 @@ ccundo seamlessly integrates with Claude Code to provide granular undo and redo 
 - **Detailed Previews** - See exactly what will be changed before undoing/redoing
 - **Cascading Undo/Redo** - Maintains project consistency by undoing/redoing dependent operations
 - **Complete Redo System** - Reverse any undo operation with full cascading support
-- **Multi-language** - Supports English and Japanese (日本語)
+- **Multi-language** - Supports English, Japanese (日本語), Indonesian (Bahasa Indonesia), and more
 - **Smart Operation Tracking** - Tracks file edits, creations, deletions, renames, and bash commands
 - **Safe Backups** - Creates backups before making changes
 - **Zero Configuration** - Works out of the box with Claude Code
@@ -128,6 +128,7 @@ ccundo supports multiple languages with persistent preferences:
 ccundo language              # Show current language and options
 ccundo language en           # Switch to English
 ccundo language ja           # Switch to Japanese (日本語)
+ccundo language id           # Switch to Indonesian (Bahasa Indonesia)
 ccundo language fr           # Switch to French (Français)
 ccundo language es           # Switch to Spanish (Español)
 ccundo language de           # Switch to German (Deutsch)
@@ -136,6 +137,7 @@ ccundo language de           # Switch to German (Deutsch)
 **Supported Languages:**
 - 🇺🇸 English (`en`) - Default
 - 🇯🇵 Japanese (`ja`) - 日本語フルサポート
+- 🇮🇩 Indonesian (`id`) - Bahasa Indonesia
 - 🇫🇷 French (`fr`) - Français
 - 🇪🇸 Spanish (`es`) - Español
 - 🇩🇪 German (`de`) - Deutsch

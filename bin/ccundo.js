@@ -41,34 +41,38 @@ program
         const sessionFile = await parser.getCurrentSessionFile();
         
         if (!sessionFile) {
-          console.log(chalk.yellow('No active Claude Code session found in this directory.'));
-          console.log(chalk.gray('Make sure you are in a directory where Claude Code has been used.'));
+          console.log(chalk.yellow(i18n.t('msg.no_active_session')));
+          console.log(chalk.gray(i18n.t('msg.make_sure_directory')));
           return;
         }
         
         operations = await parser.parseSessionFile(sessionFile);
-        console.log(chalk.bold(`\nOperations from Claude Code session:\n`));
+        console.log(chalk.bold(`
+${i18n.t('header.operations_claude')}
+`));
       } else {
         // Use local ccundo tracking
         const sessionId = options.session || await SessionTracker.getCurrentSession();
         if (!sessionId) {
-          console.log(chalk.yellow('No local ccundo session found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_local_session')));
           return;
         }
 
         const tracker = new SessionTracker(sessionId);
         await tracker.init();
         operations = await tracker.getOperations(options.all);
-        console.log(chalk.bold(`\nOperations in local session ${sessionId}:\n`));
+        console.log(chalk.bold(`
+${i18n.t('header.operations_local', { sessionId })}
+`));
       }
       
       if (operations.length === 0) {
-        console.log(chalk.yellow('No operations found.'));
+        console.log(chalk.yellow(i18n.t('msg.no_operations')));
         return;
       }
 
       operations.forEach((op, index) => {
-        const status = op.undone ? chalk.red('[UNDONE]') : chalk.green('[ACTIVE]');
+        const status = op.undone ? chalk.red(i18n.t('status.undone')) : chalk.green(i18n.t('status.active'));
         const time = formatDistance(op.timestamp);
         
         console.log(`${index + 1}. ${status} ${chalk.cyan(op.type)} - ${time}`);
@@ -101,10 +105,10 @@ program
 
 program
   .command('undo [operation-id]')
-  .description('Undo operations from the current Claude Code session')
-  .option('-s, --session <id>', 'Specify session ID')
-  .option('-y, --yes', 'Skip confirmation')
-  .option('--local', 'Use local ccundo tracking instead of Claude sessions')
+  .description(i18n.t('cmd.undo.description'))
+  .option('-s, --session <id>', i18n.t('opt.session'))
+  .option('-y, --yes', i18n.t('opt.yes'))
+  .option('--local', i18n.t('opt.local'))
   .action(async (operationId, options) => {
     try {
       let operations = [];
@@ -114,7 +118,7 @@ program
         // Use local ccundo tracking
         const sessionId = options.session || await SessionTracker.getCurrentSession();
         if (!sessionId) {
-          console.log(chalk.yellow('No local ccundo session found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_local_session')));
           return;
         }
 
@@ -127,7 +131,7 @@ program
         sessionFile = await parser.getCurrentSessionFile();
         
         if (!sessionFile) {
-          console.log(chalk.yellow('No active Claude Code session found in this directory.'));
+          console.log(chalk.yellow(i18n.t('msg.no_active_session')));
           return;
         }
         
@@ -135,7 +139,7 @@ program
       }
       
       if (operations.length === 0) {
-        console.log(chalk.yellow('No operations to undo.'));
+        console.log(chalk.yellow(i18n.t('msg.no_operations_to_undo')));
         return;
       }
 
@@ -150,7 +154,7 @@ program
           let name = `${op.type} - ${formatDistance(op.timestamp)}`;
           
           if (operationsToUndo > 1) {
-            name += chalk.red(` (+ ${operationsToUndo - 1} more will be undone)`);
+            name += chalk.red(` ${i18n.t('suffix.more_operations', { count: operationsToUndo - 1 })}`);
           }
           
           return {
@@ -160,12 +164,14 @@ program
           };
         });
         
-        console.log(chalk.yellow('\\n⚠️  Cascading undo: Selecting an operation will undo it and ALL operations that came after it.\\n'));
+        console.log(chalk.yellow(`
+${i18n.t('prompt.cascading_warning')}
+`));
         
         const answer = await inquirer.prompt([{
           type: 'list',
           name: 'selectedIndex',
-          message: 'Select operation to undo:',
+          message: i18n.t('prompt.select_operation_undo'),
           choices: choices,
           pageSize: 15
         }]);
@@ -174,7 +180,7 @@ program
       } else {
         selectedIndex = operations.findIndex(op => op.id === operationId);
         if (selectedIndex === -1) {
-          console.log(chalk.red(`Operation ${operationId} not found.`));
+          console.log(chalk.red(i18n.t('msg.operation_not_found', { id: operationId })));
           return;
         }
       }
@@ -182,26 +188,28 @@ program
       const operationsToUndo = operations.slice(0, selectedIndex + 1);
       
       if (!options.yes) {
-        console.log(chalk.yellow(`\\nThis will undo ${operationsToUndo.length} operation(s):\\n`));
+        console.log(chalk.yellow(`
+${i18n.t('header.this_will_undo', { count: operationsToUndo.length })}
+`));
         
         for (let i = 0; i < operationsToUndo.length; i++) {
           const op = operationsToUndo[i];
           console.log(`${chalk.bold(`${i + 1}.`)} ${chalk.cyan(op.type)} - ${formatDistance(op.timestamp)}`);
           
           const preview = await OperationPreview.generatePreview(op);
-          console.log(`   ${preview.preview.replace(/\\n/g, '\\n   ')}`);
+          console.log(`   ${preview.preview.replace(/\n/g, '\n   ')}`);
           console.log('');
         }
         
         const confirm = await inquirer.prompt([{
           type: 'confirm',
           name: 'proceed',
-          message: `Are you sure you want to undo these ${operationsToUndo.length} operations?`,
+          message: i18n.t('prompt.confirm_undo', { count: operationsToUndo.length }),
           default: false
         }]);
         
         if (!confirm.proceed) {
-          console.log(chalk.yellow('Undo cancelled.'));
+          console.log(chalk.yellow(i18n.t('msg.undo_cancelled')));
           return;
         }
       }
@@ -212,7 +220,9 @@ program
       const undoTracker = new UndoTracker();
       await undoTracker.init();
       
-      console.log(chalk.cyan(`\\nUndoing ${operationsToUndo.length} operations...\\n`));
+      console.log(chalk.cyan(`
+${i18n.t('header.undoing', { count: operationsToUndo.length })}
+`));
       
       let successCount = 0;
       let failCount = 0;
@@ -237,7 +247,8 @@ program
         }
       }
       
-      console.log(chalk.bold(`\\nCompleted: ${chalk.green(successCount)} successful, ${chalk.red(failCount)} failed`));
+      console.log(chalk.bold(`
+${i18n.t('status.completed', { success: successCount, failed: failCount })}`));
       
     } catch (error) {
       console.error(chalk.red(`Error: ${error.message}`));
@@ -259,14 +270,14 @@ program
         // Use local ccundo tracking
         const sessionId = options.session || await SessionTracker.getCurrentSession();
         if (!sessionId) {
-          console.log(chalk.yellow('No local ccundo session found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_local_session')));
           return;
         }
 
         const tracker = new SessionTracker(sessionId);
         await tracker.init();
         // For local tracking, we'd need to implement redo tracking
-        console.log(chalk.yellow('Redo for local tracking is not yet implemented.'));
+        console.log(chalk.yellow(i18n.t('msg.redo_not_implemented')));
         return;
       } else {
         // Use Claude Code sessions
@@ -274,7 +285,7 @@ program
         sessionFile = await parser.getCurrentSessionFile();
         
         if (!sessionFile) {
-          console.log(chalk.yellow('No active Claude Code session found in this directory.'));
+          console.log(chalk.yellow(i18n.t('msg.no_active_session')));
           return;
         }
         
@@ -333,7 +344,7 @@ program
           let name = `${op.type} - ${formatDistance(op.timestamp)}`;
           
           if (operationsToRedo > 1) {
-            name += chalk.green(` (+ ${operationsToRedo - 1} more will be redone)`);
+            name += chalk.green(` ${i18n.t('suffix.more_will_be_redone', { count: operationsToRedo - 1 })}`);
           }
           
           return {
@@ -343,7 +354,9 @@ program
           };
         });
         
-        console.log(chalk.yellow('\\n⚠️  Cascading redo: Selecting an operation will redo it and ALL undone operations that came before it.\\n'));
+        console.log(chalk.yellow(`
+${i18n.t('prompt.cascading_warning_redo')}
+`));
         
         const answer = await inquirer.prompt([{
           type: 'list',
@@ -357,7 +370,7 @@ program
       } else {
         selectedIndex = operations.findIndex(op => op.id === operationId);
         if (selectedIndex === -1) {
-          console.log(chalk.red(`Operation ${operationId} not found.`));
+          console.log(chalk.red(i18n.t('msg.operation_not_found', { id: operationId })));
           return;
         }
       }
@@ -365,7 +378,9 @@ program
       const operationsToRedo = operations.slice(0, selectedIndex + 1);
       
       if (!options.yes) {
-        console.log(chalk.yellow(`\\n${i18n.t('header.this_will_redo', { count: operationsToRedo.length })}\\n`));
+        console.log(chalk.yellow(`
+${i18n.t('header.this_will_redo', { count: operationsToRedo.length })}
+`));
         
         for (let i = 0; i < operationsToRedo.length; i++) {
           const op = operationsToRedo[i];
@@ -381,7 +396,7 @@ program
         }]);
         
         if (!confirm.proceed) {
-          console.log(chalk.yellow('Redo cancelled.'));
+          console.log(chalk.yellow(i18n.t('msg.redo_cancelled')));
           return;
         }
       }
@@ -392,7 +407,9 @@ program
       const undoTracker = new UndoTracker();
       await undoTracker.init();
       
-      console.log(chalk.cyan(`\\n${i18n.t('header.redoing', { count: operationsToRedo.length })}\\n`));
+      console.log(chalk.cyan(`
+${i18n.t('header.redoing', { count: operationsToRedo.length })}
+`));
       
       let successCount = 0;
       let failCount = 0;
@@ -418,7 +435,8 @@ program
         }
       }
       
-      console.log(chalk.bold(`\\nCompleted: ${chalk.green(successCount)} successful, ${chalk.red(failCount)} failed`));
+      console.log(chalk.bold(`
+${i18n.t('status.completed', { success: successCount, failed: failCount })}`));
       
     } catch (error) {
       console.error(chalk.red(`Error: ${error.message}`));
@@ -427,9 +445,9 @@ program
 
 program
   .command('preview [operation-id]')
-  .description('Preview what would be undone without making changes')
-  .option('-s, --session <id>', 'Specify session ID')
-  .option('--local', 'Use local ccundo tracking instead of Claude sessions')
+  .description(i18n.t('cmd.preview.description'))
+  .option('-s, --session <id>', i18n.t('opt.session'))
+  .option('--local', i18n.t('opt.local'))
   .action(async (operationId, options) => {
     try {
       let operations = [];
@@ -437,7 +455,7 @@ program
       if (options.local) {
         const sessionId = options.session || await SessionTracker.getCurrentSession();
         if (!sessionId) {
-          console.log(chalk.yellow('No local ccundo session found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_local_session')));
           return;
         }
 
@@ -449,7 +467,7 @@ program
         const sessionFile = await parser.getCurrentSessionFile();
         
         if (!sessionFile) {
-          console.log(chalk.yellow('No active Claude Code session found in this directory.'));
+          console.log(chalk.yellow(i18n.t('msg.no_active_session')));
           return;
         }
         
@@ -457,7 +475,7 @@ program
       }
       
       if (operations.length === 0) {
-        console.log(chalk.yellow('No operations found.'));
+        console.log(chalk.yellow(i18n.t('msg.no_operations')));
         return;
       }
 
@@ -471,7 +489,7 @@ program
           let name = `${op.type} - ${formatDistance(op.timestamp)}`;
           
           if (operationsToUndo > 1) {
-            name += chalk.gray(` (+ ${operationsToUndo - 1} more would be undone)`);
+            name += chalk.gray(` ${i18n.t('suffix.more_would_be_undone', { count: operationsToUndo - 1 })}`);
           }
           
           return {
@@ -483,7 +501,7 @@ program
         const answer = await inquirer.prompt([{
           type: 'list',
           name: 'selectedIndex',
-          message: 'Select operation to preview:',
+          message: i18n.t('prompt.select_operation_preview'),
           choices: choices,
           pageSize: 15
         }]);
@@ -492,25 +510,27 @@ program
       } else {
         selectedIndex = operations.findIndex(op => op.id === operationId);
         if (selectedIndex === -1) {
-          console.log(chalk.red(`Operation ${operationId} not found.`));
+          console.log(chalk.red(i18n.t('msg.operation_not_found', { id: operationId })));
           return;
         }
       }
       
       const operationsToUndo = operations.slice(0, selectedIndex + 1);
       
-      console.log(chalk.blue(`\\n📋 Preview: Would undo ${operationsToUndo.length} operation(s):\\n`));
+      console.log(chalk.blue(`
+${i18n.t('header.preview', { count: operationsToUndo.length })}
+`));
       
       for (let i = 0; i < operationsToUndo.length; i++) {
         const op = operationsToUndo[i];
         console.log(`${chalk.bold(`${i + 1}.`)} ${chalk.cyan(op.type)} - ${formatDistance(op.timestamp)}`);
         
         const preview = await OperationPreview.generatePreview(op);
-        console.log(`   ${preview.preview.replace(/\\n/g, '\\n   ')}`);
+        console.log(`   ${preview.preview.replace(/\n/g, '\n   ')}`);
         console.log('');
       }
       
-      console.log(chalk.gray('💡 To actually perform these undos, run: ccundo undo'));
+      console.log(chalk.gray(i18n.t('suffix.tip_to_undo')));
       
     } catch (error) {
       console.error(chalk.red(`Error: ${error.message}`));
@@ -519,8 +539,8 @@ program
 
 program
   .command('sessions')
-  .description('List all available Claude Code sessions')
-  .option('--local', 'Show local ccundo sessions instead of Claude sessions')
+  .description(i18n.t('cmd.sessions.description'))
+  .option('--local', i18n.t('opt.local'))
   .action(async (options) => {
     try {
       if (options.local) {
@@ -528,11 +548,13 @@ program
         const currentSession = await SessionTracker.getCurrentSession();
         
         if (sessions.length === 0) {
-          console.log(chalk.yellow('No local sessions found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_local_sessions')));
           return;
         }
         
-        console.log(chalk.bold('\nAvailable local sessions:\n'));
+        console.log(chalk.bold(`
+${i18n.t('header.available_sessions_local')}
+`));
         
         sessions.forEach(session => {
           const isCurrent = session === currentSession;
@@ -544,11 +566,13 @@ program
         const sessions = await parser.getAllSessions();
         
         if (sessions.length === 0) {
-          console.log(chalk.yellow('No Claude Code sessions found.'));
+          console.log(chalk.yellow(i18n.t('msg.no_sessions_found')));
           return;
         }
         
-        console.log(chalk.bold('\nAvailable Claude Code sessions:\n'));
+        console.log(chalk.bold(`
+${i18n.t('header.available_sessions_claude')}
+`));
         
         const currentProjectDir = await parser.getCurrentProjectDir();
         const currentProjectDirName = path.basename(currentProjectDir);
@@ -571,7 +595,7 @@ program
   .action(async (sessionId) => {
     try {
       await SessionTracker.setCurrentSession(sessionId);
-      console.log(chalk.green(`Switched to session: ${sessionId}`));
+      console.log(chalk.green(i18n.t('msg.session_switched', { sessionId })));
     } catch (error) {
       console.error(chalk.red(`Error: ${error.message}`));
     }
@@ -587,13 +611,16 @@ program
         const current = i18n.getCurrentLanguage();
         const available = i18n.getAvailableLanguages();
         
-        console.log(chalk.bold(`\\nCurrent language: ${chalk.cyan(current.name)} (${current.code})\\n`));
-        console.log(chalk.bold('Available languages:'));
+        console.log(chalk.bold(`
+${i18n.t('msg.current_language', { name: current.name, code: current.code })}
+`));
+        console.log(chalk.bold(i18n.t('msg.available_languages')));
         available.forEach(({ code, name }) => {
           const marker = code === current.code ? chalk.green('→ ') : '  ';
           console.log(`${marker}${code} - ${name}`);
         });
-        console.log(chalk.gray('\\nUsage: ccundo language <code>'));
+        console.log(chalk.gray(`
+${i18n.t('msg.usage_language')}`));
         return;
       }
       

@@ -32,6 +32,18 @@ export const languages = {
       'msg.no_local_sessions': 'No local sessions found.',
       'msg.language_set': 'Language set to {language}.',
       'msg.language_invalid': 'Invalid language. Available languages: {languages}',
+      'msg.redo_cancelled': 'Redo cancelled.',
+      'msg.session_switched': 'Switched to session: {sessionId}',
+      'msg.available_languages': 'Available languages:',
+      'msg.usage_language': 'Usage: ccundo language <code>',
+      'msg.redo_not_implemented': 'Redo for local tracking is not yet implemented.',
+      'msg.current_language': 'Current language: {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '(+ {count} more will be redone)',
+      
+      // Additional prompts  
+      'prompt.cascading_warning_redo': '⚠️  Cascading redo: Selecting an operation will redo it and ALL undone operations that came before it.',
       
       // Prompts
       'prompt.select_operation_undo': 'Select operation to undo:',
@@ -126,6 +138,18 @@ export const languages = {
       'msg.no_local_sessions': 'ローカルセッションが見つかりません。',
       'msg.language_set': '言語が{language}に設定されました。',
       'msg.language_invalid': '無効な言語です。利用可能な言語: {languages}',
+      'msg.redo_cancelled': 'やり直しがキャンセルされました。',
+      'msg.session_switched': 'セッション {sessionId} に切り替えました',
+      'msg.available_languages': '利用可能な言語:',
+      'msg.usage_language': '使用方法: ccundo language <コード>',
+      'msg.redo_not_implemented': 'ローカル追跡のやり直しはまだ実装されていません。',
+      'msg.current_language': '現在の言語: {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '（+ {count}個もやり直されます）',
+      
+      // Additional prompts
+      'prompt.cascading_warning_redo': '⚠️  カスケードやり直し: 操作を選択すると、その操作とその前のすべての元に戻された操作がやり直されます。',
       
       // Prompts
       'prompt.select_operation_undo': '元に戻す操作を選択:',
@@ -220,6 +244,18 @@ export const languages = {
       'msg.no_local_sessions': 'Aucune session locale trouvée.',
       'msg.language_set': 'Langue définie sur {language}.',
       'msg.language_invalid': 'Langue invalide. Langues disponibles : {languages}',
+      'msg.redo_cancelled': 'Rétablissement annulé.',
+      'msg.session_switched': 'Basculé vers la session : {sessionId}',
+      'msg.available_languages': 'Langues disponibles :',
+      'msg.usage_language': 'Utilisation : ccundo language <code>',
+      'msg.redo_not_implemented': 'Le rétablissement pour le suivi local n\'est pas encore implémenté.',
+      'msg.current_language': 'Langue actuelle : {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '(+ {count} de plus seront rétablies)',
+      
+      // Additional prompts
+      'prompt.cascading_warning_redo': '⚠️  Rétablissement en cascade : Sélectionner une opération la rétablira ainsi que TOUTES les opérations annulées qui l\'ont précédée.',
 
       // Prompts
       'prompt.select_operation_undo': 'Sélectionner l\'opération à annuler :',
@@ -314,6 +350,18 @@ export const languages = {
       'msg.no_local_sessions': 'No se encontraron sesiones locales.',
       'msg.language_set': 'Idioma establecido a {language}.',
       'msg.language_invalid': 'Idioma inválido. Idiomas disponibles: {languages}',
+      'msg.redo_cancelled': 'Rehacer cancelado.',
+      'msg.session_switched': 'Cambiado a sesión: {sessionId}',
+      'msg.available_languages': 'Idiomas disponibles:',
+      'msg.usage_language': 'Uso: ccundo language <código>',
+      'msg.redo_not_implemented': 'Rehacer para seguimiento local aún no está implementado.',
+      'msg.current_language': 'Idioma actual: {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '(+ {count} más serán rehechas)',
+      
+      // Additional prompts
+      'prompt.cascading_warning_redo': '⚠️  Rehacer en cascada: Seleccionar una operación la rehará a ella y a TODAS las operaciones deshechas que vinieron antes.',
 
       // Prompts
       'prompt.select_operation_undo': 'Seleccionar operación para deshacer:',
@@ -408,6 +456,18 @@ export const languages = {
       'msg.no_local_sessions': 'Keine lokalen Sitzungen gefunden.',
       'msg.language_set': 'Sprache auf {language} eingestellt.',
       'msg.language_invalid': 'Ungültige Sprache. Verfügbare Sprachen: {languages}',
+      'msg.redo_cancelled': 'Wiederherstellen abgebrochen.',
+      'msg.session_switched': 'Zu Sitzung gewechselt: {sessionId}',
+      'msg.available_languages': 'Verfügbare Sprachen:',
+      'msg.usage_language': 'Verwendung: ccundo language <code>',
+      'msg.redo_not_implemented': 'Wiederherstellen für lokale Verfolgung ist noch nicht implementiert.',
+      'msg.current_language': 'Aktuelle Sprache: {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '(+ {count} weitere werden wiederhergestellt)',
+      
+      // Additional prompts
+      'prompt.cascading_warning_redo': '⚠️  Kaskadierendes Wiederherstellen: Das Auswählen einer Operation stellt diese und ALLE rückgängig gemachten Operationen davor wieder her.',
 
       // Prompts
       'prompt.select_operation_undo': 'Operation zum Rückgängigmachen auswählen:',
@@ -502,6 +562,18 @@ export const languages = {
       'msg.no_local_sessions': 'Tidak ada sesi lokal yang ditemukan.',
       'msg.language_set': 'Bahasa diatur ke {language}.',
       'msg.language_invalid': 'Bahasa tidak valid. Bahasa yang tersedia: {languages}',
+      'msg.redo_cancelled': 'Pengulangan dibatalkan.',
+      'msg.session_switched': 'Beralih ke sesi: {sessionId}',
+      'msg.available_languages': 'Bahasa yang tersedia:',
+      'msg.usage_language': 'Penggunaan: ccundo language <kode>',
+      'msg.redo_not_implemented': 'Redo untuk pelacakan lokal belum diimplementasikan.',
+      'msg.current_language': 'Bahasa saat ini: {name} ({code})',
+      
+      // Additional suffixes
+      'suffix.more_will_be_redone': '(+ {count} lagi akan diulangi)',
+      
+      // Additional prompts
+      'prompt.cascading_warning_redo': '⚠️  Pengulangan bertingkat: Memilih operasi akan mengulanginya dan SEMUA operasi yang dibatalkan sebelumnya.',
       
       // Prompts
       'prompt.select_operation_undo': 'Pilih operasi untuk dibatalkan:',
